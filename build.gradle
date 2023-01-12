@@ -1,0 +1,41 @@
+group 'io.github.mittalmayank1989'
+version '3.2.0'
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'io.cucumber:cucumber-core:4.2.0'
+    compile 'io.cucumber:cucumber-java:4.2.0'
+    compile 'io.cucumber:cucumber-java8:4.2.0'
+    compile 'io.cucumber:cucumber-junit:4.2.0'
+    compile 'org.testng:testng:6.14.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+}
+
+task buildJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives buildJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact buildJar
+        }
+    }
+}
